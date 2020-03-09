@@ -19,13 +19,12 @@ function App() {
   //setItem() guarda/modifica el Storage
   //JSON.stringify() convierte un objeto o valor de JavaScript en una cadena de texto JSON
   useEffect(() => {
-    let initialAppointments = JSON.parse(localStorage.getItem("appointments"));
     if (initialAppointments) {
       localStorage.setItem("appointments", JSON.stringify(appointments));
     } else {
       localStorage.setItem("appointment", JSON.stringify([]));
     }
-  }, [appointments]);
+  }, [appointments, initialAppointments]);
 
   const createAppointment = appointment => {
     saveAppointments([...appointments, appointment]);
