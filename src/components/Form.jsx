@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from "react";
+import uuid from "uuid/v4";
+import PropTypes from "prop-types";
 
-const Form = () => {
+const Form = ({ createAppointment }) => {
   const [appointment, updateAppointment] = useState({
     mascota: "",
     familiar: "",
@@ -25,6 +27,7 @@ const Form = () => {
     e.preventDefault();
 
     //validation
+    //.trim() elimina espacios que el usuario pueda llegar a colocar tanto al comienzo como al final
     if (
       mascota.trim() === "" ||
       familiar.trim() === "" ||
@@ -35,16 +38,29 @@ const Form = () => {
       updateError(true);
       return;
     }
+
+    //delete validation message
+    updateError(false);
+
     //assign id
+    appointment.id = uuid();
 
     //create appointment
+    createAppointment(appointment);
 
     //reset form
+    updateAppointment({
+      mascota: "",
+      familiar: "",
+      fecha: "",
+      hora: "",
+      sintomas: ""
+    });
   };
 
   return (
     <Fragment>
-      <h5>Crear Cita</h5>
+      <h5>Crear:</h5>
       {error ? (
         <p className='alert-error'>¡¡Debes completar todos los campos!!</p>
       ) : null}
@@ -100,6 +116,10 @@ const Form = () => {
       </form>
     </Fragment>
   );
+};
+
+Form.propTypes = {
+  createAppointment: PropTypes.func.isRequired
 };
 
 export default Form;
